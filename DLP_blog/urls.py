@@ -20,3 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^api/', include('apps.api.config.urls')),
 ]
+
+# todo:这里自动扫描指定应用view层，病都注册到路由
