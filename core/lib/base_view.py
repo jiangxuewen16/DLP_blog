@@ -41,12 +41,15 @@ class BaseView(View):
     @classmethod
     def route(cls, path):
         def my_decorator(func):
-            print(isinstance(func, FunctionType))
-            print(isinstance(func, ClassType))
+            # 类的路由
+            if not isinstance(func, FunctionType):
+                return func
 
+            # 方法路由
             print(func.__name__, ':', BaseView.ROUTER)
             if func.__name__ in BaseView.ROUTER:
                 raise BaseException('路由已经存在')
+
             BaseView.ROUTER[path] = func.__name__
             print(func.__name__, ':', BaseView.ROUTER)
 
