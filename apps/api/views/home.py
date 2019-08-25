@@ -1,17 +1,19 @@
-from core.lib.base_view import BaseView
+from core.common.service_code import ServiceCode
+from core.lib.view import BaseView
+from core.lib.route import Route
 
 
-@BaseView.route(path='/api/home')
+@Route.route(path='/api/home')
 class Home(BaseView):
 
-    @BaseView.route(path='/api/home/')
+    @Route.route(path='/api/home/')
     def index(self):
         return self.response(self.requestParam)
 
-    @BaseView.route(path='/api/home/1')
+    @Route.route(path='/home/1')
     def home(self):
-        return self.response({'a':1})
+        return self.failure(ServiceCode.param_not_exists, {'a': 1})
 
-    @BaseView.route(path='/api/home/')
+    @Route.route(path='/api/home/')
     def home1(self):
         return self.response(self.requestParam)
