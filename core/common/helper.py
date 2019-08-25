@@ -3,9 +3,6 @@ import os
 import pkgutil
 import sys
 
-from scrapyd_api import ScrapydAPI
-
-from DLP_blog import settings
 
 """
 获取当前模块

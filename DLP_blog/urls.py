@@ -22,7 +22,7 @@ from core.lib.route import Route
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # re_path(r'^api/', include('apps.api.config.urls')),
+    # re_path(r'api/home', Home.as_view()),
 ]
 
 
@@ -42,6 +42,7 @@ for classItem in Route.classRoute:  # 类路由
             Route.routeList[path] = routeItem.func_name
             if classItem.path in routeKeyList:
                 continue
+            # print('============', classItem.path, routeClass)
             urlpatterns.append(re_path(r'^' + classItem.path, routeClass.as_view())),
             routeKeyList.append(classItem.path)
 

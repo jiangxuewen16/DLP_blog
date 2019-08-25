@@ -3,13 +3,13 @@ from core.lib.view import BaseView
 from core.lib.route import Route
 
 
-@Route.route(path='api/home')
-class Home(BaseView):
+@Route.route(path='/api/user')
+class User(BaseView):
 
-    @Route.route(path='/api/home/')
+    @Route.route(path='qqqqqq')
     def index(self):
         return self.response(self.requestParam)
 
-    @Route.route(path='/home/1')
+    @Route.route(path='/get/1')
     def home(self):
         return self.failure(ServiceCode.param_not_exists, {'a': 1})
