@@ -13,12 +13,37 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import importlib
+
 from django.contrib import admin
 from django.urls import path, include, re_path
 
+from core.lib.route import Route
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'^api/', include('apps.api.config.urls')),
+    # re_path(r'^api/', include('apps.api.config.urls')),
 ]
 
-# todo:这里自动扫描指定应用view层，病都注册到路由
+
+"""
+注册注解路由
+"""
+routeKeyList: list = []
+for classItem in Route.classRoute:  # 类路由
+    module = importlib.import_module(classItem.module)
+    routeClass = getattr(module, classItem.class_name)
+    for routeItem in Route.ROUTER:  # 方法路由
+        if routeItem.module + routeItem.class_name == classItem.module + classItem.class_name:  # 是不是同一个类
+            path = classItem.path + routeItem.path  # 路由路径
+            if path in Route.routeList:
+                exceptionStr = f'路由重复：{routeItem.module + routeItem.class_name} -> {routeItem.func_name}, 路径：{path}'
+                raise Exception(exceptionStr)
+            Route.routeList[path] = routeItem.func_name
+            if classItem.path in routeKeyList:
+                continue
+            urlpatterns.append(re_path(r'^' + classItem.path, routeClass.as_view())),
+            routeKeyList.append(classItem.path)
+
+print('总路由:', urlpatterns)
+
